@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 
 usr_input = None
 speed = 0
+count = 0
 
 # 馬達接上A-、A+、B-、B+
 # 另接12伏電壓供應
@@ -71,10 +72,23 @@ def set_speed():
   pwm_a.ChangeDutyCycle(speed)
   pwm_b.ChangeDutyCycle(speed)
 
+def encoder_rotary():
+  if usr_input == "n":
+    GPIO.output(PIN_A_NE,GPIO.HIGH)
+    GPIO.output(PIN_A_PO,GPIO.LOW)
+    GPIO.output(PIN_B_NE,GPIO.HIGH)
+    GPIO.output(PIN_B_PO,GPIO.LOW)
+    if count >= 100:
+        GPIO.output(PIN_A_NE,GPIO.LOW)
+        GPIO.output(PIN_A_PO,GPIO.LOW)
+        GPIO.output(PIN_B_NE,GPIO.LOW)
+        GPIO.output(PIN_B_PO,GPIO.LOW)
 
-def read_encoder():
-  pass
-  
+def read_encoder(channel):
+  global count
+  count +=1
+
+GPIO.add_event_detect(encoder_pin_a, GPIO.BOTH, callback=read_encoder )
 try:
   while True:
     usr_input = input("command:")
@@ -82,7 +96,9 @@ try:
     go_back()
     stop()
     set_speed()
+    encoder_rotary()
 
 
 except KeyboardInterrupt:
-  pass
+    GPIO.cleanup()
+  
