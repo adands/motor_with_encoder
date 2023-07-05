@@ -83,6 +83,7 @@ def encoder_rotary():
         GPIO.output(PIN_A_PO,GPIO.LOW)
         GPIO.output(PIN_B_NE,GPIO.LOW)
         GPIO.output(PIN_B_PO,GPIO.LOW)
+        count = 0
 
 def read_encoder(channel):
   global count
