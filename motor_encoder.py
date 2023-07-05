@@ -90,6 +90,7 @@ def read_encoder(channel):
   count +=1
 
 GPIO.add_event_detect(encoder_pin_a, GPIO.BOTH, callback=read_encoder )
+
 try:
   while True:
     usr_input = input("command:")
@@ -98,7 +99,6 @@ try:
     stop()
     set_speed()
     encoder_rotary()
-
 
 except KeyboardInterrupt:
     GPIO.cleanup()
